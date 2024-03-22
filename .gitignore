@@ -118,3 +118,8 @@ mmseg/.mim
 
 # Pytorch
 *.pth
+*.tar
+*.zip
+
+icml2024_rebutal/
+pretrained_models/

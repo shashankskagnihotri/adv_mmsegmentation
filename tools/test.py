@@ -47,6 +47,19 @@ def parse_args():
         help='job launcher')
     parser.add_argument(
         '--tta', action='store_true', help='Test time augmentation')
+    
+    parser.add_argument('-it', '--iterations', type=int, default=3,
+                        help='number of iterations for adversarial attack')
+    parser.add_argument('-at', '--attack', type=str, default='cospgd', choices={'fgsm', 'cospgd', 'segpgd', 'pgd'},
+                        help='Which adversarial attack')
+    parser.add_argument('-ep', '--epsilon', type=float, default=8,
+                        help='number of iterations for adversarial attack')
+    parser.add_argument('-a', '--alpha', type=float, default=2.55,
+                        help='number of iterations for adversarial attack')
+    parser.add_argument('-nr', '--norm', type=str, default="linf", choices={'linf', 'l2', 'l1'},
+                        help='lipschitz continuity bound to use')
+    parser.add_argument('--perform_attack', action='store_true')
+    
     # When using PyTorch version >= 2.0.0, the `torch.distributed.launch`
     # will pass the `--local-rank` parameter to `tools/train.py` instead
     # of `--local_rank`.
@@ -86,8 +99,13 @@ def main():
     cfg = Config.fromfile(args.config)
     cfg.launcher = args.launcher
     if args.cfg_options is not None:
-        cfg.merge_from_dict(args.cfg_options)
+        cfg.merge_from_dict(args.cfg_options)    
 
+    #import ipdb;ipdb.set_trace()
+    if args.perform_attack:
+        cfg['model']['perform_attack'] = True
+        cfg['model']['attack_cfg'] = dict(norm=args.norm, name=args.attack, iterations=args.iterations, epsilon=args.epsilon, alpha=args.alpha)
+    
     # work_dir is determined in this priority: CLI > segment in file > filename
     if args.work_dir is not None:
         # update configs according to CLI args if args.work_dir is not None

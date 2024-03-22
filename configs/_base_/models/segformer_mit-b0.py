@@ -6,7 +6,8 @@ data_preprocessor = dict(
     std=[58.395, 57.12, 57.375],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255)
+    seg_pad_val=255,
+    enable_normalization=False)
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
@@ -36,7 +37,12 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, reduction='none')),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='whole'))
+    test_cfg=dict(mode='whole'),
+    perform_attack=False,
+    attack_cfg=dict(norm='linf', name='cospgd', iterations=3, epsilon=8, alpha=2.55),
+    attack_loss=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0, reduction='none'),
+    normalize_mean_std=dict(mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375]))

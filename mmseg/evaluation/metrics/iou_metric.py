@@ -183,6 +183,7 @@ class IoUMetric(BaseMetric):
         """
 
         mask = (label != ignore_index)
+        #import ipdb;ipdb.set_trace()
         pred_label = pred_label[mask]
         label = label[mask]
 

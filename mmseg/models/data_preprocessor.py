@@ -65,6 +65,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         rgb_to_bgr: bool = False,
         batch_augments: Optional[List[dict]] = None,
         test_cfg: dict = None,
+        enable_normalization: bool = True,
     ):
         super().__init__()
         self.size = size
@@ -76,6 +77,8 @@ class SegDataPreProcessor(BaseDataPreprocessor):
             '`bgr2rgb` and `rgb2bgr` cannot be set to True at the same time')
         self.channel_conversion = rgb_to_bgr or bgr_to_rgb
 
+        if not enable_normalization:
+            mean = None
         if mean is not None:
             assert std is not None, 'To enable the normalization in ' \
                                     'preprocessing, please specify both ' \
