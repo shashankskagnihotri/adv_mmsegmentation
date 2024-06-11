@@ -123,3 +123,9 @@ mmseg/.mim
 
 icml2024_rebutal/
 pretrained_models/
+
+SAM_compare/
+delta_study/
+get_results.py
+icml2024_rebutal_apgd/
+old_delta_study_with_200_itrs/

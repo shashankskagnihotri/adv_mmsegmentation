@@ -5,7 +5,10 @@ import os.path as osp
 
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
-
+import time
+import torch
+torch.cuda.empty_cache()
+#os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:24"
 
 # TODO: support fuse_conv_bn, visualization, and format_only
 def parse_args():
@@ -50,7 +53,7 @@ def parse_args():
     
     parser.add_argument('-it', '--iterations', type=int, default=3,
                         help='number of iterations for adversarial attack')
-    parser.add_argument('-at', '--attack', type=str, default='cospgd', choices={'fgsm', 'cospgd', 'segpgd', 'pgd'},
+    parser.add_argument('-at', '--attack', type=str, default='cospgd', choices={'fgsm', 'cospgd', 'segpgd', 'pgd', 'apgd', 'no_attack'},
                         help='Which adversarial attack')
     parser.add_argument('-ep', '--epsilon', type=float, default=8,
                         help='number of iterations for adversarial attack')
@@ -134,7 +137,11 @@ def main():
     runner = Runner.from_cfg(cfg)
 
     # start testing
+    start_time = time.time()
     runner.test()
+    end_time = time.time()
+    time_taken = end_time - start_time
+    print("\n\nTOTAL TIME:\tMinutes:{} and Seconds{}\n\tONLY IN SECONDS:{}".format(time_taken/60,time_taken%60,time_taken))
 
 
 if __name__ == '__main__':
