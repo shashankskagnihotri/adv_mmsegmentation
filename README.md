@@ -1,3 +1,7 @@
+# Repository from mmsegmentation, I have merely added [CosPGD](https://github.com/shashankskagnihotri/cospgd) and other adversarial attacks to it.
+
+## Please refer to [provided scripts](https://github.com/shashankskagnihotri/adv_mmsegmentation/tree/main/scripts) for example usage. 
+
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
   <div>&nbsp;</div>
